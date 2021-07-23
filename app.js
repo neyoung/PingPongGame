@@ -14,16 +14,16 @@ let gameRound = 1;
 const player1 = {
     id: 1,
     score: 0,
+    scores: [],
     display: document.querySelector('#p1Display'),
     button: document.querySelector('#p1Button'),
-    scores: [],
 };
 const player2 = {
     id: 2,
     score: 0,
+    scores: [],
     display: document.querySelector('#p2Display'),
     button: document.querySelector('#p2Button'),
-    scores: [],
 };
 
 /* Updates the score and score display depending on which player button was clicked
@@ -40,6 +40,8 @@ function updateScores(player, opponent) {
             player.display.classList.add('has-text-success');
             opponent.display.classList.add('has-text-danger');
             updateScoreBoard(player, opponent);
+            player1.button.disabled = true;
+            player2.button.disabled = true;
         }
         player.display.textContent = player.score;
     }
@@ -84,12 +86,12 @@ function resetScoreBoard() {
 
 // Resets only the score display when reset button is clicked
 function reset() {
-    const players = [player1, player2];
     isGameOver = false;
-    for(let player of players) {
+    for(let player of [player1, player2]) {
         player.score = 0;
         player.display.textContent = 0;
         player.display.classList.remove('has-text-success', 'has-text-danger');
+        player.button.disabled = false;
     }
     if(gameRound > 3) resetScoreBoard()
 }
@@ -103,8 +105,9 @@ player2.button.addEventListener('click', function() {
 });
 
 // Resets the game when a different 'Playing To' value is selected
+// this = playtoSelect variable
 playtoSelect.addEventListener('input', function() {
-    winningScore = parseInt(playtoSelect.value);
+    winningScore = parseInt(this.value);
     reset();
 });
 
